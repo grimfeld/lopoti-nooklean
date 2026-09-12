@@ -9,6 +9,10 @@
 const nextConfig = {
   reactStrictMode: true,
 
+  // See the matching comment in apps/lopoti: pins the workspace root so build
+  // traces are correct rather than inferred from an unrelated lockfile.
+  outputFileTracingRoot: new URL('../..', import.meta.url).pathname,
+
   typescript: { ignoreBuildErrors: false },
   eslint: { ignoreDuringBuilds: false },
 

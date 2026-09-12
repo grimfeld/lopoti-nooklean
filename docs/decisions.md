@@ -219,6 +219,27 @@ business.
 
 ---
 
+## Traps already hit, and why the fix looks odd
+
+Two settings in this repository look arbitrary and are not. Both cost real time
+to diagnose, so they are written down rather than left to be rediscovered.
+
+### Local Postgres is on port 55432, not 5432
+
+A Postgres installed on the machine itself occupies 5432 and wins the binding, so
+`pg` connects to *that* server instead of the project's container — and fails with
+`password authentication failed for user "dev"`, which points at the container and
+is entirely misleading. The container publishes 55432 so the two cannot collide.
+
+CI keeps the usual 5432: a fresh runner has nothing else listening.
+
+### `outputFileTracingRoot` is pinned in all three apps
+
+Next.js infers the workspace root by walking up for a lockfile. If any unrelated
+lockfile exists in a parent directory of the checkout, it picks that directory and
+traces the wrong files — which on Vercel can leave `pg` out of the back office's
+serverless bundle. Pinning the root removes the guesswork.
+
 ## Deliberately deferred
 
 These are known gaps, not oversights. Each is isolated so it can be added

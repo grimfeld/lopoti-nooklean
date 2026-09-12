@@ -22,7 +22,9 @@ test('a wrong password is refused', async ({ page }) => {
   await page.fill('input[name="password"]', 'definitely-not-the-password');
   await page.getByRole('button', { name: 'Entrer' }).click();
 
-  await expect(page.getByRole('alert')).toContainText(/incorrect/i);
+  // Matched by the text the owner actually reads, not by role: Next.js renders
+  // its own route announcer with role="alert", so a role query is ambiguous.
+  await expect(page.getByText(/mot de passe incorrect/i)).toBeVisible();
 });
 
 test('the owner can log in, see both brands, and change a status', async ({ page }) => {

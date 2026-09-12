@@ -80,6 +80,28 @@ jobs:
       - name: Unit tests
         run: pnpm test
 
+      # The four smoke flows: a visitor submitting on each public site, and the
+      # back office reading and changing what arrived. These run against locally
+      # started apps (Playwright's webServer) rather than the Vercel previews, so
+      # a pull request is gated even before a preview finishes deploying.
+      - name: Install Playwright browser
+        run: pnpm --filter @lopoti-nooklean/admin exec playwright install chromium --with-deps
+
+      - name: Smoke tests
+        run: pnpm --filter @lopoti-nooklean/admin test:e2e
+        env:
+          ADMIN_PASSWORD: mot-de-passe-de-test-pour-la-ci
+          ADMIN_SECRET: 0000000000000000000000000000000000000000000000000000000000000000
+          NEXT_PUBLIC_API_ORIGIN: http://localhost:3003
+
+      - name: Keep the report when a smoke test fails
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: apps/admin/playwright-report/
+          retention-days: 7
+
   build:
     name: Build all three apps
     runs-on: ubuntu-latest

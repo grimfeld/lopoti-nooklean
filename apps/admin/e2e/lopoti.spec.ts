@@ -33,7 +33,9 @@ test('a visitor can submit a pet-sitting request', async ({ page }) => {
 
   // The confirmation must be explicit. A visitor who is unsure whether their
   // request was received will phone, or give up.
-  await expect(page.getByRole('status')).toContainText(/bien arrivée/i);
+  // Matched by text rather than role: Next.js renders its own announcer element
+  // with an ARIA live role, which makes a bare role query ambiguous.
+  await expect(page.getByText(/votre demande est bien arrivée/i)).toBeVisible();
 });
 
 test('the form refuses an incomplete submission', async ({ page }) => {
@@ -42,5 +44,5 @@ test('the form refuses an incomplete submission', async ({ page }) => {
   // Submitting with nothing filled in must not produce a success state.
   await page.getByRole('button', { name: /Envoyer ma demande/i }).click();
 
-  await expect(page.getByRole('status')).toBeHidden();
+  await expect(page.getByText(/votre demande est bien arrivée/i)).toBeHidden();
 });

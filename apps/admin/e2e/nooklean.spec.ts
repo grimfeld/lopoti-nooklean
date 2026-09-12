@@ -40,7 +40,9 @@ test('a visitor can submit a cleaning request for two buildings', async ({ page 
 
   await page.getByRole('button', { name: /Envoyer ma demande/i }).click();
 
-  await expect(page.getByRole('status')).toContainText(/noté/i);
+  // Matched by text rather than role, as in the Lopoti spec: Next.js adds its own
+  // ARIA live region, so a role query matches more than the confirmation.
+  await expect(page.getByText(/c’est noté, merci/i)).toBeVisible();
 });
 
 test('a one-off request hides the weekday picker', async ({ page }) => {

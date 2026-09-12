@@ -1,0 +1,120 @@
+name: Pull request summary
+
+# Posts one comment on every pull request, in French, saying whether the change
+# is safe to merge and linking the three preview websites.
+#
+# This is the bridge that makes the whole review model work. The owner is not a
+# developer and will not read a CI log. He needs two things: "did the automatic
+# checks pass?" and "where do I look at it?". Everything else is noise.
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+permissions:
+  pull-requests: write
+  actions: read
+
+jobs:
+  comment:
+    if: github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Post or update the summary comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+            const pr = run.pull_requests[0];
+            if (!pr) {
+              core.info('No pull request attached to this run; nothing to comment on.');
+              return;
+            }
+
+            const passed = run.conclusion === 'success';
+
+            // Preview URLs follow Vercel's deterministic pattern for a branch.
+            // Using the pattern rather than the API keeps this workflow from
+            // needing a Vercel token.
+            const slug = run.head_branch
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/^-+|-+$/g, '')
+              .slice(0, 40);
+
+            const previews = [
+              { name: 'Site Lopoti (garde d’animaux)', project: 'lopoti' },
+              { name: 'Site Nooklean (nettoyage)', project: 'nooklean' },
+              { name: 'Back-office', project: 'admin' },
+            ];
+
+            const links = previews
+              .map((p) => `- **${p.name}** → https://${p.project}-git-${slug}-grimfeld.vercel.app`)
+              .join('\n');
+
+            const verdict = passed
+              ? [
+                  '## ✅ Les vérifications automatiques sont passées',
+                  '',
+                  'Le code compile, les types sont corrects et les tests passent.',
+                  'Vous pouvez regarder le résultat puis fusionner si cela vous convient.',
+                ].join('\n')
+              : [
+                  '## ❌ Les vérifications automatiques ont échoué',
+                  '',
+                  '**Ne fusionnez pas cette modification.** Quelque chose ne fonctionne pas.',
+                  '',
+                  `[Voir le détail technique](${run.html_url}) — ou demandez simplement à`,
+                  'votre assistant : « les vérifications ont échoué, corrige-les ».',
+                ].join('\n');
+
+            const body = [
+              verdict,
+              '',
+              '### Voir les sites avant de fusionner',
+              '',
+              links,
+              '',
+              '> Ces adresses sont des **aperçus privés**. Les vrais sites ne changent',
+              '> qu’au moment où vous cliquez sur **Merge**.',
+              '',
+              '### Que vérifier',
+              '',
+              '1. Ouvrez l’aperçu concerné par la modification.',
+              '2. Regardez la page qui a changé — **et sur téléphone**, pas seulement sur ordinateur.',
+              '3. Si un formulaire a été touché, envoyez une demande de test pour vérifier',
+              '   qu’elle arrive bien dans le back-office.',
+              '',
+              '<!-- lopoti-nooklean-pr-summary -->',
+            ].join('\n');
+
+            // Update the existing comment rather than adding one per push, so the
+            // thread stays readable.
+            const marker = '<!-- lopoti-nooklean-pr-summary -->';
+            const existing = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+            });
+
+            const mine = existing.data.find(
+              (c) => c.user.type === 'Bot' && c.body.includes(marker),
+            );
+
+            if (mine) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: mine.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body,
+              });
+            }

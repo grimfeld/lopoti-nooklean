@@ -11,6 +11,11 @@
 const nextConfig = {
   reactStrictMode: true,
 
+  // Pin the workspace root to this repository. Without it Next walks up the
+  // directory tree, finds an unrelated lockfile on the machine above the repo,
+  // and infers the wrong root — which produces incorrect build traces on Vercel.
+  outputFileTracingRoot: new URL('../..', import.meta.url).pathname,
+
   // Fail the production build on a type or lint error rather than shipping it.
   // Next.js ignores lint errors during `next build` by default; for a site
   // maintained with AI assistance, a silent pass defeats the whole point.

@@ -1,0 +1,96 @@
+name: Neon database branch
+
+# Gives every pull request its own real database.
+#
+# Why this and not a throwaway container: the Vercel preview deployment needs a
+# database it can actually reach, and CI needs the same data the preview shows.
+# A Neon branch is a copy-on-write clone of production's schema, created in
+# seconds and thrown away on merge — so migrations are exercised for real on
+# every pull request, against realistic data, without touching production.
+#
+# Required repository secrets:
+#   NEON_API_KEY     — Neon account API key
+#   NEON_PROJECT_ID  — the Neon project containing the production database
+#   VERCEL_TOKEN     — to point the preview deployment at the branch
+#
+# Required repository variable:
+#   VERCEL_ADMIN_PROJECT_ID — the back office's Vercel project id
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+concurrency:
+  group: neon-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  create:
+    name: Create branch and migrate
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    outputs:
+      database_url: ${{ steps.branch.outputs.db_url_pooled }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create a Neon branch for this pull request
+        id: branch
+        uses: neondatabase/create-branch-action@v5
+        with:
+          project_id: ${{ secrets.NEON_PROJECT_ID }}
+          # Named after the PR so it is obvious in the Neon dashboard what a
+          # stray branch belongs to.
+          branch_name: pr-${{ github.event.pull_request.number }}
+          api_key: ${{ secrets.NEON_API_KEY }}
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.11.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # The whole point: migrations run against a real branch before any test or
+      # preview sees it. A broken migration fails here, on the pull request.
+      - name: Apply migrations to the branch
+        run: pnpm db:migrate
+        env:
+          DATABASE_URL: ${{ steps.branch.outputs.db_url_pooled }}
+
+      - name: Point the preview deployment at this branch
+        # So the preview URL the owner clicks is backed by this PR's database
+        # rather than production.
+        run: |
+          curl -sS -X POST \
+            "https://api.vercel.com/v10/projects/${{ vars.VERCEL_ADMIN_PROJECT_ID }}/env" \
+            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d @- <<JSON
+          {
+            "key": "DATABASE_URL",
+            "value": "${{ steps.branch.outputs.db_url_pooled }}",
+            "type": "encrypted",
+            "target": ["preview"],
+            "gitBranch": "${{ github.head_ref }}"
+          }
+          JSON
+
+  delete:
+    name: Delete branch on close
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      # Neon's free tier caps branch count, and a stale branch per old pull
+      # request would exhaust it within a month.
+      - name: Delete the pull request's Neon branch
+        uses: neondatabase/delete-branch-action@v3
+        with:
+          project_id: ${{ secrets.NEON_PROJECT_ID }}
+          branch: pr-${{ github.event.pull_request.number }}
+          api_key: ${{ secrets.NEON_API_KEY }}
