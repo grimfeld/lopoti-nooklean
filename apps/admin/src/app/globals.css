@@ -1,0 +1,70 @@
+/*
+ * Back-office base styles.
+ *
+ * The back office is a tool, not a brand surface: it stays plain so the two
+ * brands' own designs are the only visual identity in the system. Per-brand
+ * accents appear only where the brand switcher is active.
+ */
+
+:root {
+  --bo-bg: #f6f7f3;
+  --bo-surface: #fff;
+  --bo-ink: #1d2b20;
+  --bo-muted: #6b7d63;
+  --bo-line: #dfe4d6;
+  --bo-accent: #456c33;
+  --bo-danger: #b0453c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bo-bg);
+  color: var(--bo-ink);
+  font:
+    15px/1.55 'Roboto',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 0.4em;
+  line-height: 1.2;
+}
+
+a {
+  color: var(--bo-accent);
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* Visible focus is not optional: this interface is used daily with a keyboard. */
+:focus-visible {
+  outline: 3px solid var(--bo-accent);
+  outline-offset: 2px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.muted {
+  color: var(--bo-muted);
+}

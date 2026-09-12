@@ -1,0 +1,150 @@
+.loading {
+  padding: 40px;
+  text-align: center;
+  color: var(--bo-muted);
+}
+
+/* --- Login ---------------------------------------------------------------- */
+
+.loginCard {
+  max-width: 360px;
+  margin: 14vh auto 0;
+  padding: 34px 30px;
+  background: var(--bo-surface);
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 12px 34px rgba(69, 108, 51, 0.13);
+}
+
+.loginCard input {
+  width: 100%;
+  margin: 14px 0;
+  padding: 12px 14px;
+  border: 1px solid var(--bo-line);
+  border-radius: 10px;
+}
+
+.loginError {
+  margin: 0 0 10px;
+  color: var(--bo-danger);
+  font-size: 0.85rem;
+}
+
+.primary {
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 18px;
+  background: var(--bo-accent);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* --- Dashboard ------------------------------------------------------------ */
+
+.shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 24px 80px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  font-size: 1.8rem;
+}
+
+.brandSwitch {
+  display: flex;
+  gap: 6px;
+}
+
+.brandOn,
+.brandOff {
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.brandOn {
+  border: 1px solid var(--bo-ink);
+  background: var(--bo-ink);
+  color: #fff;
+}
+
+.brandOff {
+  border: 1px solid var(--bo-line);
+  background: transparent;
+  color: var(--bo-muted);
+}
+
+.ghost {
+  border: 1px solid var(--bo-line);
+  background: transparent;
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--bo-ink);
+}
+
+.notice {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #f6e3e1;
+  color: #8a3a32;
+  font-size: 0.9rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bo-surface);
+  border-radius: 14px;
+  overflow: hidden;
+  font-size: 0.88rem;
+}
+
+.table th,
+.table td {
+  padding: 11px 13px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--bo-line);
+}
+
+.table th {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bo-muted);
+}
+
+.table tr:last-child td {
+  border-bottom: 0;
+}
+
+.table select {
+  border: 1px solid var(--bo-line);
+  border-radius: 8px;
+  padding: 5px 8px;
+  background: #fff;
+}
+
+/* The table is the one thing allowed to scroll sideways on a narrow screen. */
+@media (max-width: 760px) {
+  .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

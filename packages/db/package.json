@@ -1,0 +1,29 @@
+{
+  "name": "@lopoti-nooklean/db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema.ts",
+    "./migrate": "./src/migrate.ts"
+  },
+  "scripts": {
+    "migrate": "tsx src/cli/migrate.ts",
+    "migrate:check": "tsx src/cli/guard.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "pg": "^8.13.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@lopoti-nooklean/tsconfig": "workspace:*",
+    "@types/pg": "^8.11.10",
+    "tsx": "^4.19.2",
+    "vitest": "^2.1.8"
+  }
+}

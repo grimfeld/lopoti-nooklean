@@ -1,0 +1,64 @@
+/*
+ * Nooklean — base styles.
+ *
+ * As with Lopoti, the full design is ported in a later slice. The original
+ * stylesheet is preserved nearly verbatim when that happens; this file holds
+ * only the reset and palette hookup so the app builds and renders sanely now.
+ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font:
+    16px/1.6 'DM Sans',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  /* Manrope for headings, Titan One for display accents — both wired up with
+     next/font when the full design lands. */
+  font-family: 'Manrope', system-ui, sans-serif;
+  margin: 0 0 0.5em;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: var(--ink);
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}

@@ -1,0 +1,64 @@
+/*
+ * Lopoti — base styles.
+ *
+ * The full design is ported from the original site in a later slice. What is
+ * here is the shared foundation: reset, typography scale and the palette hookup.
+ * Component-specific styles live in CSS Modules next to their component, so an
+ * edit to one part of the site cannot restyle another.
+ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font:
+    16px/1.6 'Roboto',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  /* Basteleur Moonlight is the display face; it is wired up with next/font in
+     the slice that ports the full design. */
+  font-family: 'Basteleur', Georgia, serif;
+  margin: 0 0 0.5em;
+  line-height: 1.15;
+}
+
+a {
+  color: var(--green-deep);
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}

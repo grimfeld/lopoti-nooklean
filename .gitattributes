@@ -1,0 +1,25 @@
+# Normalise line endings.
+#
+# This matters more than usual here: the migration runner checksums every .sql
+# file to detect one being edited after it was applied. Authoring happens on
+# Windows and CI runs on Linux, so without normalisation the same file would
+# hash differently in the two places and every deploy would report a modified
+# migration. (The runner also strips CRLF before hashing, belt and braces.)
+* text=auto eol=lf
+
+# Binary files, left exactly as they are.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+*.pdf binary
+*.docx binary
+*.zip binary
+
+# Generated; not worth reviewing in a diff.
+pnpm-lock.yaml linguist-generated=true -diff

@@ -1,0 +1,37 @@
+{
+  "name": "@lopoti-nooklean/admin",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3003",
+    "//build": "Migrations run BEFORE the bundle is produced, so a deploy cannot serve code whose schema has not been applied yet.",
+    "build": "pnpm --filter @lopoti-nooklean/db migrate && next build",
+    "build:no-migrate": "next build",
+    "start": "next start --port 3003",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@lopoti-nooklean/db": "workspace:*",
+    "@lopoti-nooklean/ui": "workspace:*",
+    "next": "^15.0.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
+    "@lopoti-nooklean/eslint-config": "workspace:*",
+    "@lopoti-nooklean/tsconfig": "workspace:*",
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.9.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "eslint": "^9.15.0",
+    "eslint-config-next": "^15.0.3",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8"
+  }
+}

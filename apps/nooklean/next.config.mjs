@@ -1,0 +1,39 @@
+/**
+ * Nooklean — public site.
+ *
+ * Like the Lopoti app: no secrets, no database access, everything through the
+ * admin API.
+ *
+ * @type {import('next').NextConfig}
+ */
+const nextConfig = {
+  reactStrictMode: true,
+
+  typescript: { ignoreBuildErrors: false },
+  eslint: { ignoreDuringBuilds: false },
+
+  transpilePackages: ['@lopoti-nooklean/ui'],
+
+  images: {
+    formats: ['image/avif', 'image/webp'],
+  },
+
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'X-Frame-Options', value: 'DENY' },
+        ],
+      },
+      {
+        source: '/devis/:token',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+      },
+    ];
+  },
+};
+
+export default nextConfig;

@@ -1,0 +1,40 @@
+# Local Postgres for offline development and Vitest DB tests.
+#
+# CI does NOT use this — pull requests get a real Neon branch instead
+# (see .github/workflows). This exists so work continues without a network
+# connection and without consuming Neon branch quota.
+#
+#   pnpm db:local:up      start it
+#   pnpm db:migrate       apply migrations to it
+#   pnpm db:local:down    stop it
+#
+# The credentials below are deliberately trivial: this database is local-only,
+# never exposed, and holds no real data.
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: lopoti-nooklean-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: lopoti_nooklean
+    # Published on 55432, NOT the usual 5432.
+    #
+    # Many machines already run a Postgres of their own on 5432 — if one does,
+    # it wins the binding and `pg` silently connects to it instead of to this
+    # container, failing with a confusing "password authentication failed for
+    # user dev". Using a distinct port removes that whole class of confusion and
+    # leaves any existing local Postgres untouched.
+    ports:
+      - "55432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dev -d lopoti_nooklean"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres-data:

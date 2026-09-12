@@ -1,0 +1,115 @@
+name: CI
+
+# Gates every pull request. Branch protection makes these checks required, so a
+# change that fails here cannot reach production — which is the mechanism that
+# lets a non-developer merge confidently.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  # A new push to the same branch supersedes the previous run.
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Keep pnpm from asking questions in a non-interactive shell.
+  CI: true
+
+jobs:
+  verify:
+    name: Typecheck, lint and unit tests
+    runs-on: ubuntu-latest
+
+    # A real Postgres, not a mock: the migration runner and the double-booking
+    # constraint are exactly the things that must be exercised for real.
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: dev
+          POSTGRES_PASSWORD: dev
+          POSTGRES_DB: lopoti_nooklean
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U dev -d lopoti_nooklean"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgres://dev:dev@localhost:5432/lopoti_nooklean
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.11.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Runs before anything touches the database. A destructive migration is
+      # rejected here, with an explanation, rather than during a deploy.
+      - name: Check migrations are forward-only
+        run: pnpm db:migrate:check
+
+      - name: Apply migrations
+        run: pnpm db:migrate
+
+      # Applying twice must be a no-op. If this step fails, the runner is not
+      # idempotent and every deploy would be a gamble.
+      - name: Apply migrations again (must be idempotent)
+        run: pnpm db:migrate
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Unit tests
+        run: pnpm test
+
+  build:
+    name: Build all three apps
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.11.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The admin app's own build script runs migrations, which needs a database.
+      # Here we only want to know that the bundles compile, so migrations are
+      # skipped and the build runs against placeholder configuration.
+      - name: Build
+        run: pnpm turbo run build --filter=!@lopoti-nooklean/admin
+        env:
+          NEXT_PUBLIC_API_ORIGIN: https://example.invalid
+
+      - name: Build back office
+        run: pnpm --filter @lopoti-nooklean/admin build:no-migrate
+        env:
+          # Placeholders: this step compiles, it does not connect to anything.
+          DATABASE_URL: postgres://user:pass@localhost:5432/placeholder
+          ADMIN_PASSWORD: placeholder-password-for-build
+          ADMIN_SECRET: 0000000000000000000000000000000000000000000000000000000000000000

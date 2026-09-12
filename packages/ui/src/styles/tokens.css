@@ -1,0 +1,72 @@
+/*
+ * Brand palettes, as CSS custom properties.
+ *
+ * Colour changes are the single most common thing the owner will ask for, so
+ * they get a small, obvious surface: change a value here (or in an app's own
+ * brand file) and it propagates. No component hard-codes a hex value.
+ *
+ * Both palettes are taken from the original designs, unchanged.
+ */
+
+:root {
+  /* Neutral scale shared by both brands and the back office. */
+  --white: #fff;
+  --line-soft: rgba(22, 61, 67, 0.14);
+
+  /* Status colours for the back office. Brand-neutral on purpose: these mean
+     "new", "confirmed", "done", "cancelled" and must read the same either way. */
+  --status-new-bg: #dce8c5;
+  --status-new-fg: #456c33;
+  --status-confirmed-bg: #b4c493;
+  --status-confirmed-fg: #2f4a20;
+  --status-done-bg: #cad5a6;
+  --status-done-fg: #58704c;
+  --status-cancelled-bg: #e8d3d3;
+  --status-cancelled-fg: #8a4a4a;
+
+  --focus-ring: #456c33;
+}
+
+/*
+ * Lopoti — pet sitting. Greens derived from the logo.
+ */
+[data-brand='lopoti'] {
+  --ink: #163d43;
+  --green-deep: #456c33;
+  --green-leaf: #50753d;
+  --sage: #b4c493;
+  --green-light: #cad5a6;
+  --cream: #f7f9cd;
+  --paper: #fbfaf5;
+  --muted: #6b7d63;
+  --line: #d9e2c4;
+  --accent: var(--green-deep);
+}
+
+/*
+ * Nooklean — building cleaning. Teal and coral.
+ */
+[data-brand='nooklean'] {
+  --ink: #163d43;
+  --ink-deep: #0d3035;
+  --coral: #ff765f;
+  --coral-shadow: #d84f3e;
+  --mint: #b8ded2;
+  --cream: #f5f0e6;
+  --paper: #fbfaf5;
+  --muted: #4f686c;
+  --line: rgba(22, 61, 67, 0.14);
+  --accent: var(--coral);
+}
+
+/* Respect a visitor who has asked for less motion. Both sites animate. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

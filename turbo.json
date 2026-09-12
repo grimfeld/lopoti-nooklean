@@ -1,0 +1,62 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "stream",
+  "globalDependencies": ["**/.env.*local", "packages/tsconfig/base.json"],
+  "globalEnv": ["NODE_ENV", "CI", "VERCEL", "VERCEL_ENV", "VERCEL_URL"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+      "env": [
+        "DATABASE_URL",
+        "POSTGRES_URL",
+        "ADMIN_PASSWORD",
+        "ADMIN_SECRET",
+        "NEXT_PUBLIC_API_ORIGIN",
+        "NEXT_PUBLIC_SENTRY_DSN",
+        "SENTRY_AUTH_TOKEN",
+        "PUBLIC_ORIGIN_LOPOTI",
+        "PUBLIC_ORIGIN_NOOKLEAN"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "lint": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "env": ["DATABASE_URL", "POSTGRES_URL"]
+    },
+    "test:e2e": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "outputs": ["playwright-report/**", "test-results/**"],
+      "env": [
+        "DATABASE_URL",
+        "POSTGRES_URL",
+        "ADMIN_PASSWORD",
+        "ADMIN_SECRET",
+        "E2E_BASE_URL_LOPOTI",
+        "E2E_BASE_URL_NOOKLEAN",
+        "E2E_BASE_URL_ADMIN"
+      ]
+    },
+    "migrate": {
+      "cache": false,
+      "env": ["DATABASE_URL", "POSTGRES_URL"]
+    },
+    "migrate:check": {
+      "cache": false,
+      "outputs": []
+    }
+  }
+}

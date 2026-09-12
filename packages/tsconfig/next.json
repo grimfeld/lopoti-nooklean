@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Next.js app",
+  "extends": "./base.json",
+  "compilerOptions": {
+    // Next.js generates CSS Module types as an index signature, so
+    // `noPropertyAccessFromIndexSignature` (inherited from base.json) would make
+    // every `styles.foo` an error — fighting the framework's own codegen on every
+    // styled element. CSS Modules already give the protection that flag provides:
+    // a misspelled class name is a missing property either way.
+    //
+    // It stays enabled for server-side packages (see node.json), where index
+    // signatures mean genuinely untyped objects like process.env.
+    "noPropertyAccessFromIndexSignature": false,
+
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "jsx": "preserve",
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "incremental": true,
+    "allowJs": true,
+    "plugins": [{ "name": "next" }]
+  }
+}

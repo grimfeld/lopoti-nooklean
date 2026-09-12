@@ -1,0 +1,9 @@
+{
+  "extends": "@lopoti-nooklean/tsconfig/next.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "jsx": "react-jsx"
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "dist"]
+}

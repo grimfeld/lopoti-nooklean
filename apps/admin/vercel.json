@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "//buildCommand": "The admin build runs database migrations first (see its package.json), so a deploy can never serve code whose schema has not been applied.",
+  "buildCommand": "cd ../.. && pnpm turbo run build --filter=@lopoti-nooklean/admin",
+  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
+  "//ignoreCommand": "No turbo-ignore here: the back office owns the migrations, so it must redeploy whenever packages/db changes — which turbo-ignore would already catch, but the cost of an unnecessary admin build is far lower than the cost of a skipped migration.",
+  "ignoreCommand": "exit 1"
+}
