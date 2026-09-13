@@ -56,3 +56,11 @@ tmp/
 # a font .zip and a temporary scripts folder. The .docx templates worth keeping
 # live in docs/templates/ instead.
 nooklean-source/
+
+# The owner's real contract and quote documents.
+#
+# Kept on disk as reference while building the quote pages, never committed: this
+# repository is public, and these are a client's actual cleaning contract and a
+# filled-in quote. docs/templates/README.md describes what they are and where to
+# find them.
+docs/templates/*.docx
