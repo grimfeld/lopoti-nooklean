@@ -88,10 +88,18 @@ jobs:
         run: pnpm --filter @lopoti-nooklean/admin exec playwright install chromium --with-deps
 
       - name: Smoke tests
+        # Playwright starts the three apps itself (see playwright.config.ts), so
+        # these variables have to be present here: they are inherited by the dev
+        # servers it spawns, not just by the test process.
         run: pnpm --filter @lopoti-nooklean/admin test:e2e
         env:
+          # The job's DATABASE_URL (the Postgres service container) is inherited,
+          # so the back office writes to the same database the unit tests used.
           ADMIN_PASSWORD: mot-de-passe-de-test-pour-la-ci
-          ADMIN_SECRET: 0000000000000000000000000000000000000000000000000000000000000000
+          # Quoted: unquoted, YAML reads a run of digits as a number and the
+          # value arrives as "0", which fails the length check in config.ts.
+          ADMIN_SECRET: '0000000000000000000000000000000000000000000000000000000000000000'
+          # The public sites must call the back office, not themselves.
           NEXT_PUBLIC_API_ORIGIN: http://localhost:3003
 
       - name: Keep the report when a smoke test fails
@@ -134,4 +142,6 @@ jobs:
           # Placeholders: this step compiles, it does not connect to anything.
           DATABASE_URL: postgres://user:pass@localhost:5432/placeholder
           ADMIN_PASSWORD: placeholder-password-for-build
-          ADMIN_SECRET: 0000000000000000000000000000000000000000000000000000000000000000
+          # Quoted: unquoted, YAML reads a run of digits as a number and the
+          # value arrives as "0", which fails the length check in config.ts.
+          ADMIN_SECRET: '0000000000000000000000000000000000000000000000000000000000000000'

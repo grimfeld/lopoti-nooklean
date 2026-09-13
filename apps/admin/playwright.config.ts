@@ -41,30 +41,43 @@ export default defineConfig({
     { name: 'admin', use: { baseURL: ADMIN }, testMatch: /admin\./ },
   ],
 
-  // Locally, start all three apps. In CI the Vercel preview deployments are
-  // already running, so the URLs are passed in instead.
-  ...(process.env['CI'] == null
-    ? {
-        webServer: [
-          {
-            command: 'pnpm --filter @lopoti-nooklean/admin dev',
-            url: ADMIN,
-            reuseExistingServer: true,
-            timeout: 120_000,
-          },
-          {
-            command: 'pnpm --filter @lopoti-nooklean/lopoti dev',
-            url: LOPOTI,
-            reuseExistingServer: true,
-            timeout: 120_000,
-          },
-          {
-            command: 'pnpm --filter @lopoti-nooklean/nooklean dev',
-            url: NOOKLEAN,
-            reuseExistingServer: true,
-            timeout: 120_000,
-          },
-        ],
-      }
-    : {}),
+  // Start all three apps, in CI as well as locally.
+  //
+  // An earlier version started them only outside CI, on the assumption that CI
+  // would test the Vercel preview deployments. That made the pull request gate
+  // depend on a deployment finishing first, and when no URLs were passed the
+  // tests quietly ran against nothing and every one of them failed at the first
+  // navigation. Starting the apps here keeps the gate self-contained: it tests
+  // the code in the pull request, before any deployment exists.
+  //
+  // `E2E_BASE_URL_*` still override, for pointing a run at a deployed preview.
+  webServer: [
+    {
+      command: 'pnpm --filter @lopoti-nooklean/admin dev',
+      url: ADMIN,
+      // Locally, reuse a server already running from `pnpm dev`. In CI there is
+      // never one to reuse, and silently reusing something unexpected would be
+      // worse than starting fresh.
+      reuseExistingServer: process.env['CI'] == null,
+      timeout: 180_000,
+      stdout: 'pipe',
+      stderr: 'pipe',
+    },
+    {
+      command: 'pnpm --filter @lopoti-nooklean/lopoti dev',
+      url: LOPOTI,
+      reuseExistingServer: process.env['CI'] == null,
+      timeout: 180_000,
+      stdout: 'pipe',
+      stderr: 'pipe',
+    },
+    {
+      command: 'pnpm --filter @lopoti-nooklean/nooklean dev',
+      url: NOOKLEAN,
+      reuseExistingServer: process.env['CI'] == null,
+      timeout: 180_000,
+      stdout: 'pipe',
+      stderr: 'pipe',
+    },
+  ],
 });
