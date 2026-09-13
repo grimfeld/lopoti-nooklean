@@ -3,6 +3,5 @@
   "framework": "nextjs",
   "buildCommand": "cd ../.. && pnpm turbo run build --filter=@lopoti-nooklean/lopoti",
   "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
-  "//ignoreCommand": "Skips the build when this app and its dependencies are untouched, so editing the cleaning site does not redeploy the pet-sitting site. Exit code 0 cancels the build; 1 proceeds.",
   "ignoreCommand": "cd ../.. && npx turbo-ignore @lopoti-nooklean/lopoti"
 }
