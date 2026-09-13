@@ -8,12 +8,22 @@ name: Neon database branch
 # seconds and thrown away on merge — so migrations are exercised for real on
 # every pull request, against realistic data, without touching production.
 #
+# This workflow is OFF until it is switched on deliberately. To enable it, set the
+# repository variable NEON_ENABLED to "true" and add the secrets below.
+#
+# Why it defaults to off: without the secrets the Neon action fails with "Cannot
+# run interactive auth in CI" on every single pull request. A check that is always
+# red for a reason nobody can act on teaches the owner that red means "ignore me",
+# which is far more dangerous than having no per-pull-request database. Until it is
+# switched on, the merge gate rests on the CI workflow alone.
+#
 # Required repository secrets:
 #   NEON_API_KEY     — Neon account API key
 #   NEON_PROJECT_ID  — the Neon project containing the production database
 #   VERCEL_TOKEN     — to point the preview deployment at the branch
 #
-# Required repository variable:
+# Required repository variables:
+#   NEON_ENABLED            — "true" to switch this workflow on
 #   VERCEL_ADMIN_PROJECT_ID — the back office's Vercel project id
 
 on:
@@ -27,7 +37,7 @@ concurrency:
 jobs:
   create:
     name: Create branch and migrate
-    if: github.event.action != 'closed'
+    if: github.event.action != 'closed' && vars.NEON_ENABLED == 'true'
     runs-on: ubuntu-latest
     outputs:
       database_url: ${{ steps.branch.outputs.db_url_pooled }}
@@ -83,7 +93,7 @@ jobs:
 
   delete:
     name: Delete branch on close
-    if: github.event.action == 'closed'
+    if: github.event.action == 'closed' && vars.NEON_ENABLED == 'true'
     runs-on: ubuntu-latest
     steps:
       # Neon's free tier caps branch count, and a stale branch per old pull
