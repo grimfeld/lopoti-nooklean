@@ -1,11 +1,24 @@
 /*
  * Lopoti — base styles.
  *
- * The full design is ported from the original site in a later slice. What is
- * here is the shared foundation: reset, typography scale and the palette hookup.
- * Component-specific styles live in CSS Modules next to their component, so an
- * edit to one part of the site cannot restyle another.
+ * Ported from the original site's stylesheet, close to verbatim. Component
+ * styles live in CSS Modules next to their component; this file holds only the
+ * reset, the palette, and the element-level typography that the whole page
+ * inherits.
  */
+
+:root {
+  --ink: #456c33;
+  --cream: #f7f9cd;
+  --paper: #fffef3;
+  --coral: #e1e7ba;
+  --yellow: #cad5a6;
+  --green: #b4c493;
+  --blue: #dce8c5;
+  --muted: #58704c;
+  --line: #cad5a6;
+  --leaf: #50753d;
+}
 
 * {
   box-sizing: border-box;
@@ -17,28 +30,49 @@ html {
 
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--cream);
   color: var(--ink);
-  font:
-    16px/1.6 'Roboto',
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    sans-serif;
+  font-family: var(--font-body), Roboto, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
 }
 
 h1,
 h2,
 h3 {
-  /* Basteleur Moonlight is the display face; it is wired up with next/font in
-     the slice that ports the full design. */
-  font-family: 'Basteleur', Georgia, serif;
-  margin: 0 0 0.5em;
-  line-height: 1.15;
+  font-family: var(--font-display), Georgia, serif;
+  line-height: 1.04;
 }
 
-a {
-  color: var(--green-deep);
+h1 {
+  font-size: clamp(3.1rem, 6vw, 5.8rem);
+  letter-spacing: -0.055em;
+}
+
+h1 em {
+  font-style: italic;
+  color: var(--leaf);
+}
+
+h2 {
+  font-size: clamp(2.35rem, 4vw, 4rem);
+  letter-spacing: -0.045em;
+}
+
+h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.45rem;
+}
+
+img {
+  max-width: 100%;
 }
 
 button {
@@ -49,16 +83,36 @@ button {
 input,
 select,
 textarea {
-  font: inherit;
-  color: inherit;
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  border: 1px solid var(--green);
+  border-radius: 8px;
+  background: #fff;
+  padding: 11px 12px;
+  font: 400 0.93rem var(--font-body), Roboto, Arial, sans-serif;
+  color: var(--ink);
 }
 
+textarea {
+  resize: vertical;
+  min-height: 84px;
+}
+
+label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.84rem;
+  margin: 0 0 16px;
+}
+
+/* Visible focus is not optional: the request form is long and keyboard use is
+   the fastest way through it. */
 :focus-visible {
-  outline: 3px solid var(--focus-ring);
+  outline: 3px solid var(--ink);
   outline-offset: 3px;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
+.hidden {
+  display: none;
 }

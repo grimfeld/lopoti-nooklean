@@ -24,10 +24,13 @@ export const publicSite = tseslint.config(...base, {
               'All database access lives in packages/db.',
           },
           {
+            // The bare name only: the `/schema` subpath is the browser-safe half
+            // (types and validation, no `pg`) and is exactly what a public site
+            // should use.
             name: '@lopoti-nooklean/db',
             message:
-              'Public sites are static and hold no credentials. Import types from ' +
-              '@lopoti-nooklean/db/schema only, and fetch data from the admin API.',
+              'Public sites are static and hold no credentials. Import from ' +
+              '@lopoti-nooklean/db/schema instead, and fetch data from the admin API.',
           },
         ],
         patterns: [

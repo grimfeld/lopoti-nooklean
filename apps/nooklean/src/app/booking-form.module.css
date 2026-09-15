@@ -1,143 +1,292 @@
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
+/* Nooklean's three-step booking form, ported from the original stylesheets. */
 
-.fieldset {
-  border: 0;
-  border-top: 1px solid var(--line);
-  padding: 20px 0 0;
-  margin: 0;
+.progress {
   display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.fieldset legend {
-  padding: 0 8px 0 0;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--coral);
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
   gap: 6px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--muted);
+  margin-bottom: 30px;
 }
 
-.field input,
-.field select {
-  padding: 13px;
+.progress i {
+  height: 4px;
+  flex: 1;
+  background: #dce3e2;
+  border-radius: 4px;
+}
+
+.progressActive {
+  background: var(--coral) !important;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.step label {
+  font-weight: 800;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.step input,
+.step select {
+  width: 100%;
+  padding: 15px;
   border: 1px solid #ced9d7;
   border-radius: 7px;
   background: #fbfcfa;
-  font-size: 1rem;
-  font-weight: 400;
+  font: inherit;
   color: var(--ink);
+  margin-top: 6px;
 }
 
-.row {
+.stepTop {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.back {
+  border: 0;
+  background: #edf1ef;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.two {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 10px;
 }
 
-.row3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
+/* --- Addresses ------------------------------------------------------------ */
 
-.address {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.addressEntry {
+  margin-top: 12px;
   padding: 16px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--paper);
+  border: 1px solid #ced9d7;
+  border-radius: 10px;
+  background: #f8fbf8;
 }
 
-.addressHead {
+.addressHeading {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 5px;
 }
 
-.remove {
+.removeAddress {
   border: 0;
-  background: none;
-  border-bottom: 1px solid currentColor;
-  padding: 2px 0;
-  color: var(--muted);
-  font-size: 0.82rem;
+  background: transparent;
+  color: #8a4a43;
   font-weight: 700;
+  cursor: pointer;
+}
+
+.addressFields {
+  display: grid;
+  grid-template-columns: 1.2fr 0.7fr 1fr;
+  gap: 9px;
+  margin-top: 8px;
 }
 
 .addAddress {
   align-self: flex-start;
   border: 0;
   border-bottom: 1px solid var(--ink);
-  background: transparent;
   padding: 5px 0;
+  background: transparent;
   color: var(--ink);
-  font-size: 0.86rem;
+  font: 700 13px var(--font-body), 'DM Sans', sans-serif;
+  cursor: pointer;
+}
+
+/* --- Estimate ------------------------------------------------------------- */
+
+.priceEstimate {
+  padding: 14px 16px;
+  border-radius: 9px;
+  background: var(--cream);
+  line-height: 1.45;
+}
+
+.priceEstimate small {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--mint);
+}
+
+.priceEstimate strong {
+  display: block;
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  margin: 4px 0;
+}
+
+.addressEstimate {
+  margin-top: 8px;
+  color: var(--mint);
+  font-size: 11px;
   font-weight: 700;
 }
 
-.choice {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+/* --- Schedule ------------------------------------------------------------- */
 
-.radio,
-.weekday {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 0.95rem;
-  font-weight: 400;
+.scheduleNote {
+  margin: 0 0 18px;
+  padding: 13px 15px;
+  border-radius: 8px;
+  background: var(--cream);
   color: var(--ink);
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 .weekdays {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin: 10px 0 17px;
   border: 0;
-  margin: 0;
   padding: 0;
 }
 
-.weekdaysLegend {
-  width: 100%;
-  padding: 0 0 8px;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
+.weekdays button {
+  border: 1px solid #cbd8d5;
+  border-radius: 8px;
+  padding: 13px 5px;
+  background: #fff;
+  color: var(--ink);
+  font: 700 13px var(--font-body), 'DM Sans', sans-serif;
+  cursor: pointer;
+}
+
+.weekdayActive {
+  border-color: var(--ink) !important;
+  background: var(--ink) !important;
+  color: #fff !important;
+}
+
+.monthlyPill {
+  margin-top: 14px;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.slots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.day,
+.slot {
+  border: 1px solid #d5dfdd;
+  background: #fff;
+  border-radius: 7px;
+  padding: 11px 6px;
+  text-align: center;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.day small {
+  display: block;
+}
+
+.dayActive,
+.slotActive {
+  background: var(--ink) !important;
+  color: #fff !important;
+  border-color: var(--ink) !important;
+}
+
+.slot:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+/* --- Options -------------------------------------------------------------- */
+
+.visitOption {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  margin-top: 8px;
+  padding: 13px 15px;
+  border: 1px solid #b9cec8;
+  border-radius: 9px;
+  background: #fff;
+}
+
+.visitOption input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--coral);
+}
+
+.visitOption b {
+  display: block;
+}
+
+.visitOption small {
+  display: block;
+  margin-top: 3px;
+  color: var(--mint);
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 .check {
+  font-weight: 400;
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  font-weight: 400;
+  gap: 8px;
 }
 
-.check small {
-  display: block;
-  margin-top: 3px;
-  color: var(--muted);
+.check input {
+  width: auto;
+}
+
+.rhythm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.rhythm label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 15px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.rhythm input {
+  width: auto;
+  margin: 0;
 }
 
 .honeypot {
@@ -146,23 +295,6 @@
   width: 1px;
   height: 1px;
   overflow: hidden;
-}
-
-.submit {
-  align-self: flex-start;
-  border: 0;
-  border-radius: 7px;
-  padding: 15px 24px;
-  background: var(--coral);
-  color: var(--ink-deep);
-  font-weight: 700;
-  box-shadow: 0 5px 0 var(--coral-shadow);
-}
-
-.submit:disabled {
-  opacity: 0.6;
-  cursor: progress;
-  box-shadow: none;
 }
 
 .error {
@@ -175,18 +307,50 @@
 }
 
 .success {
-  padding: 28px 24px;
-  background: var(--mint);
-  border-radius: 12px;
+  text-align: center;
+  padding: 35px;
+}
+
+.success img {
+  width: 90px;
+  height: auto;
 }
 
 .success h3 {
-  margin-top: 0;
+  font-size: 28px;
+  margin: 10px;
 }
 
-@media (max-width: 560px) {
-  .row,
-  .row3 {
+.success p {
+  line-height: 1.6;
+}
+
+.btnCoral {
+  border: 0;
+  border-radius: 7px;
+  padding: 15px 20px;
+  font-weight: 700;
+  background: var(--coral);
+  color: var(--ink2);
+  box-shadow: 0 5px 0 var(--coral-shadow);
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.btnCoral:disabled {
+  opacity: 0.6;
+  cursor: progress;
+  box-shadow: none;
+}
+
+@media (max-width: 600px) {
+  .addressFields,
+  .two {
     grid-template-columns: 1fr;
+  }
+
+  .days,
+  .slots {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

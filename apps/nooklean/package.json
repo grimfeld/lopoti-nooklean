@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@lopoti-nooklean/db": "workspace:*",
     "@lopoti-nooklean/ui": "workspace:*",
     "next": "^15.0.3",
     "react": "^18.3.1",

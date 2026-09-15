@@ -16,7 +16,9 @@ const nextConfig = {
   typescript: { ignoreBuildErrors: false },
   eslint: { ignoreDuringBuilds: false },
 
-  transpilePackages: ['@lopoti-nooklean/ui'],
+  // See apps/lopoti: `@lopoti-nooklean/db` is transpiled for its `/schema`
+  // subpath only, which carries no database access.
+  transpilePackages: ['@lopoti-nooklean/ui', '@lopoti-nooklean/db'],
 
   images: {
     formats: ['image/avif', 'image/webp'],

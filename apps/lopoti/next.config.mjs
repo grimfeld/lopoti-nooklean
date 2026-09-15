@@ -23,7 +23,11 @@ const nextConfig = {
   eslint: { ignoreDuringBuilds: false },
 
   // Transpile workspace packages, which ship TypeScript source rather than a build.
-  transpilePackages: ['@lopoti-nooklean/ui'],
+  //
+  // `@lopoti-nooklean/db` is listed for its `/schema` subpath only — the
+  // browser-safe half, holding types and validation with no `pg` import. A lint
+  // rule bans the package's main entry point here.
+  transpilePackages: ['@lopoti-nooklean/ui', '@lopoti-nooklean/db'],
 
   images: {
     // Photographs are served from this app's own /public, optimised by Next.

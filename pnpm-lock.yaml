@@ -14,6 +14,9 @@ importers:
       prettier:
         specifier: ^3.3.3
         version: 3.9.6
+      sharp:
+        specifier: ^0.35.4
+        version: 0.35.4(@types/node@22.20.2)
       turbo:
         specifier: ^2.3.3
         version: 2.10.12
@@ -78,6 +81,9 @@ importers:
 
   apps/lopoti:
     dependencies:
+      '@lopoti-nooklean/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       '@lopoti-nooklean/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -124,6 +130,9 @@ importers:
 
   apps/nooklean:
     dependencies:
+      '@lopoti-nooklean/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       '@lopoti-nooklean/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -2807,8 +2816,7 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@img/colour@1.1.0':
-    optional: true
+  '@img/colour@1.1.0': {}
 
   '@img/sharp-darwin-arm64@0.35.4':
     optionalDependencies:
@@ -3527,8 +3535,7 @@ snapshots:
       has-property-descriptors: 1.0.2
       object-keys: 1.1.1
 
-  detect-libc@2.1.2:
-    optional: true
+  detect-libc@2.1.2: {}
 
   doctrine@2.1.0:
     dependencies:
@@ -4642,7 +4649,6 @@ snapshots:
       '@img/sharp-win32-ia32': 0.35.4
       '@img/sharp-win32-x64': 0.35.4
       '@types/node': 22.20.2
-    optional: true
 
   shebang-command@2.0.0:
     dependencies:

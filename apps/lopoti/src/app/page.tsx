@@ -1,35 +1,47 @@
-import { RequestForm } from './request-form';
+import { DEFAULT_SERVICES_CONFIG, resolveAnimals, type ServicesConfig } from '@lopoti-nooklean/db/schema';
 
-import styles from './page.module.css';
+import { API_ORIGIN } from '@/lib/config';
+
+import { HomeClient } from './home-client';
 
 /**
- * Lopoti home page — first vertical slice.
+ * Lopoti home page.
  *
- * The full design (hero, service cards, the conditional animal → service flow)
- * is ported in a later slice. What matters now is that the whole path works
- * end to end: a visitor submits this form, the admin API validates and stores
- * it, and the row appears in the back office.
+ * The service catalogue is fetched on the server so the page arrives complete:
+ * a visitor (or a search engine) sees the real services in the HTML rather than
+ * a flash of placeholder while JavaScript loads.
+ *
+ * If the back office is unreachable the shipped defaults are used, so an API
+ * outage degrades to a working site rather than an empty one.
  */
-export default function HomePage() {
-  return (
-    <main className={styles.page}>
-      <header className={styles.header}>
-        <p className={styles.eyebrow}>Paris et proche banlieue</p>
-        <h1>Des services attentionnés pour votre animal.</h1>
-        <p className={styles.lede}>
-          Visites à domicile, balades et garde pendant vos absences. Dites-nous ce dont votre animal
-          a besoin — nous revenons vers vous avant tout engagement.
-        </p>
-      </header>
 
-      <section className={styles.formSection} id="demande">
-        <h2>Demander un créneau</h2>
-        <p className={styles.note}>
-          Il s’agit d’une <strong>demande</strong>, pas d’une réservation confirmée. Nous vérifions
-          la disponibilité et vous répondons personnellement.
-        </p>
-        <RequestForm />
-      </section>
-    </main>
+async function loadConfig(): Promise<ServicesConfig> {
+  try {
+    const response = await fetch(`${API_ORIGIN}/api/config`, {
+      // The catalogue changes rarely and is edited by one person; a minute of
+      // staleness is a fair price for not hitting the database on every visit.
+      next: { revalidate: 60 },
+    });
+    if (!response.ok) return DEFAULT_SERVICES_CONFIG;
+
+    const data: unknown = await response.json();
+    if (typeof data === 'object' && data !== null && 'config' in data) {
+      return (data as { config: ServicesConfig }).config;
+    }
+  } catch {
+    // Unreachable API: fall through to the defaults below.
+  }
+  return DEFAULT_SERVICES_CONFIG;
+}
+
+export default async function HomePage() {
+  const config = await loadConfig();
+  const animals = resolveAnimals(config);
+
+  return (
+    <HomeClient
+      animals={animals.length > 0 ? animals : resolveAnimals(DEFAULT_SERVICES_CONFIG)}
+      potes={config.potes.length > 0 ? config.potes : DEFAULT_SERVICES_CONFIG.potes}
+    />
   );
 }
