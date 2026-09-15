@@ -39,6 +39,39 @@ skipped build means a skipped migration, and then the code and the schema
 disagree. An unnecessary build costs a minute; a missed migration costs a broken
 site with a confusing Postgres error.
 
+## Deployment protection — the trap that hides a working site
+
+New projects inherit the team's default, which turns **Vercel Authentication**
+on. A protected deployment answers every request with `302` to
+`vercel.com/sso-api`, so:
+
+- a visitor sees a Vercel login page instead of the website, and
+- the public sites' cross-origin calls to the back office API are redirected
+  rather than answered, which breaks every form submission.
+
+Neither shows up as a failed build. The deployment reports `READY` and looks
+perfectly healthy; it is simply unreachable.
+
+Current settings, deliberately different per project:
+
+| Project | Vercel Authentication | Why |
+| --- | --- | --- |
+| `lopoti` | **off** | A customer-facing site must be reachable by anyone |
+| `nooklean` | **off** | Same |
+| `admin` | **preview only** | Production must stay open so the public sites can call `/api/submit` and `/api/availability`; preview deployments stay behind Vercel login |
+
+The back office is not left unguarded by this. Every route except the three
+deliberately public ones requires the shared-password session — `protectedRoute`
+is the default helper and `publicRoute` is an explicit, reviewable choice. See
+`apps/admin/src/lib/api.ts`.
+
+Check it with:
+
+```bash
+curl -sS -o /dev/null -w '%{http_code}\n' https://<project>.vercel.app
+# 200 = reachable, 302 = protected
+```
+
 ## Environment variables
 
 Set in the dashboard, per project, not in these files — see
