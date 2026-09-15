@@ -1,0 +1,383 @@
+/* Lopoti's five-step request form, ported from the original stylesheet. */
+
+.bookingSection {
+  background: #dfe8c0;
+  padding: 95px max(36px, calc((100vw - 1208px) / 2));
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 70px;
+  align-items: start;
+}
+
+.bookingHeading p {
+  max-width: 410px;
+}
+
+.bookingNote {
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.13em;
+  font-weight: 700;
+  color: var(--leaf);
+  margin-bottom: 18px;
+}
+
+.form {
+  background: var(--paper);
+  border-radius: 22px;
+  padding: 33px;
+}
+
+/* --- Progress ------------------------------------------------------------- */
+
+.progress {
+  display: flex;
+  gap: 16px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #879b7a;
+}
+
+.progress span {
+  position: relative;
+}
+
+.progressActive {
+  color: var(--ink);
+}
+
+.progressActive::after {
+  position: absolute;
+  content: '';
+  height: 3px;
+  background: var(--leaf);
+  left: 0;
+  right: 0;
+  bottom: -22px;
+}
+
+/* --- Steps ---------------------------------------------------------------- */
+
+.step {
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+.step legend {
+  font: 700 1.6rem var(--font-display), Georgia, serif;
+  margin-bottom: 8px;
+}
+
+.stepHelp {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: 23px;
+}
+
+.stepActions {
+  margin-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.stepActions > :only-child {
+  margin-left: auto;
+}
+
+/* --- Choice cards (animal, service) --------------------------------------- */
+
+.choiceGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px 40px;
+  padding: 14px 0 14px 40px;
+}
+
+.choice {
+  position: relative;
+  cursor: pointer;
+  min-height: 104px;
+  margin: 0;
+  border: 0;
+  border-radius: 28px;
+  background: #f8facd;
+  padding: 20px 22px 18px 76px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  box-shadow: 0 4px 0 #d9e3a8;
+  overflow: visible;
+  transition: 0.15s;
+}
+
+.choice input {
+  position: absolute;
+  opacity: 0;
+}
+
+/* The pictogram hangs off the left edge of the card. */
+.choice > span {
+  position: absolute;
+  left: -43px;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  transform: translateY(-50%);
+  font-size: 4rem;
+  z-index: 1;
+}
+
+.choice img {
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+}
+
+.choice strong {
+  font-size: 1.06rem;
+}
+
+.choice small {
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.choiceSelected {
+  border: 3px solid var(--ink);
+  background: #e1e7ba;
+  padding: 17px 20px 15px 74px;
+  box-shadow: 0 4px 0 var(--ink);
+}
+
+/* --- Date step ------------------------------------------------------------ */
+
+.dateLayout {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 25px;
+}
+
+.calendarBox {
+  padding: 15px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.calendarTitle {
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 12px;
+  text-transform: capitalize;
+}
+
+.calendarWeekdays,
+.calendarDays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  text-align: center;
+}
+
+.calendarWeekdays {
+  font-size: 0.68rem;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+
+.calendarDays button {
+  border: 0;
+  background: transparent;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  cursor: pointer;
+  color: var(--ink);
+  font: 600 0.75rem var(--font-body), Roboto, Arial, sans-serif;
+}
+
+.calendarDays button:hover:not(:disabled),
+.daySelected {
+  background: var(--ink) !important;
+  color: #fff !important;
+}
+
+/* Saturdays are struck through rather than hidden: the visitor should see that
+   the day exists and is deliberately unavailable. */
+.dayOff {
+  color: #9cae8c !important;
+  text-decoration: line-through;
+  cursor: not-allowed !important;
+}
+
+.dayEmpty {
+  aspect-ratio: 1;
+}
+
+.legend {
+  font-size: 0.65rem;
+  color: var(--muted);
+  margin: 12px 0 0;
+}
+
+.legend i {
+  display: inline-block;
+  background: var(--ink);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin: 0 4px 0 9px;
+}
+
+.legend i:first-child {
+  margin-left: 0;
+}
+
+.legendOff {
+  background: #9cae8c !important;
+}
+
+/* --- Fields --------------------------------------------------------------- */
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 15px;
+}
+
+.yesNo {
+  font-size: 0.85rem;
+  margin: 12px 0;
+}
+
+.yesNo p {
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.yesNo label {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  margin: 0 18px 0 0;
+}
+
+.yesNo input {
+  width: auto;
+  margin: 0;
+}
+
+.consent {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.consent input {
+  width: auto;
+  margin: 3px 0 0;
+}
+
+/* Off-screen rather than display:none — some bots skip hidden inputs, and the
+   point is for them to fill it in. */
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.error {
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border-radius: 9px;
+  background: #f6e3e1;
+  color: #8a3a32;
+  font-size: 0.9rem;
+}
+
+.success {
+  background: var(--paper);
+  border-radius: 22px;
+  padding: 40px 33px;
+}
+
+.success h3 {
+  font: 700 1.6rem var(--font-display), Georgia, serif;
+  margin-bottom: 12px;
+}
+
+/* --- Buttons -------------------------------------------------------------- */
+
+.button {
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 14px 23px;
+  font: 700 0.95rem var(--font-body), Roboto, Arial, sans-serif;
+  text-decoration: none;
+}
+
+.buttonPrimary {
+  composes: button;
+  background: var(--ink);
+  color: #fff;
+}
+
+.buttonPrimary:hover {
+  background: var(--leaf);
+}
+
+.buttonPrimary:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.buttonGhost {
+  composes: button;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid #8ba276;
+}
+
+@media (max-width: 850px) {
+  .bookingSection {
+    grid-template-columns: 1fr;
+    gap: 38px;
+    padding: 65px 22px;
+  }
+
+  .form {
+    padding: 22px;
+  }
+}
+
+@media (max-width: 520px) {
+  .choiceGrid,
+  .dateLayout,
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .progress {
+    gap: 9px;
+    font-size: 0.66rem;
+  }
+}

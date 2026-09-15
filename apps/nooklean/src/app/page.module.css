@@ -1,51 +1,896 @@
-.page {
-  width: min(760px, calc(100% - 40px));
-  margin: 0 auto;
-  padding: 56px 0 100px;
+/*
+ * Nooklean home page — ported from the original stylesheets.
+ *
+ * The arch-shaped hero, the sticker-like coral buttons and the star positions
+ * are the design; they are kept at their original measurements rather than
+ * reinterpreted.
+ */
+
+.shell {
+  width: min(1180px, calc(100% - 48px));
+  margin: auto;
 }
 
-.header {
-  margin-bottom: 48px;
+/* --- Nav ------------------------------------------------------------------ */
+
+.nav {
+  position: relative;
+  height: 92px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--cream);
+  /* Bleeds the band to the full viewport width without a wrapper element. */
+  box-shadow: 0 0 0 100vmax var(--cream);
+  clip-path: inset(0 -100vmax);
+}
+
+.brand img {
+  width: auto;
+  max-width: 195px;
+  max-height: 78px;
+  object-fit: contain;
+  display: block;
+}
+
+.navLinks {
+  display: flex;
+  gap: 34px;
+}
+
+.navLinks a {
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.menu {
+  display: none;
+  border: 0;
+  background: none;
+  font-size: 25px;
+}
+
+/* --- Buttons -------------------------------------------------------------- */
+
+.btn {
+  border: 0;
+  border-radius: 7px;
+  padding: 15px 20px;
+  font-weight: 700;
+  display: inline-flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btnDark {
+  composes: btn;
+  background: var(--ink);
+  color: #fff;
+}
+
+.btnCoral {
+  composes: btn;
+  background: var(--coral);
+  color: var(--ink2);
+  box-shadow: 0 5px 0 var(--coral-shadow);
+}
+
+.textLink {
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+/* --- Hero ----------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  min-height: 670px;
+  display: grid;
+  grid-template-columns: 1.02fr 0.98fr;
+  align-items: center;
+  gap: 48px;
+  padding-bottom: 60px;
 }
 
 .eyebrow {
-  margin: 0 0 12px;
-  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  width: fit-content;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--cream);
+  font-size: 12px;
   font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  position: relative;
+  top: 18px;
+}
+
+.eyebrow i,
+.syncPill i {
+  width: 8px;
+  height: 8px;
+  background: var(--coral);
+  border-radius: 50%;
+  box-shadow: 0 0 0 5px rgba(100, 210, 90, 0.17);
+}
+
+.brandline {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 42px;
+}
+
+.brandline span {
+  color: var(--ink);
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: clamp(54px, 6.3vw, 88px);
+  line-height: 0.96;
+  font-weight: 400;
+}
+
+.brandline img {
+  display: block;
+  width: auto;
+  max-width: calc(100% - 155px);
+  height: clamp(54px, 6.3vw, 88px);
+  object-fit: contain;
+}
+
+.heroTitle {
+  margin: 13px 0 24px;
+  font-size: clamp(54px, 6.3vw, 88px);
+  letter-spacing: -5px;
+  line-height: 0.96;
+}
+
+.heroTitle em {
+  color: var(--coral);
+  font-style: normal;
+}
+
+.heroCopy > p {
+  font-size: 18px;
+  line-height: 1.65;
+  max-width: 530px;
+  color: var(--muted);
+}
+
+.heroActions {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin: 34px 0;
+}
+
+.rating {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.rating small {
+  color: #647a7d;
+}
+
+.faces {
+  letter-spacing: 2px;
   color: var(--coral);
 }
 
-.header h1 {
-  font-size: clamp(2.1rem, 5.5vw, 3.2rem);
+.heroArt {
+  position: relative;
+  height: 550px;
 }
 
-.lede {
-  max-width: 56ch;
-  color: var(--muted);
-  font-size: 1.05rem;
+/* The arch: a rounded-top frame holding the cross-fading photographs. */
+.arch {
+  position: relative;
+  height: 100%;
+  background: var(--mint);
+  border-radius: 240px 240px 18px 18px;
+  overflow: hidden;
 }
 
-.formSection {
-  background: var(--white);
+.heroSlide {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 0.9s ease, transform 5s ease;
+}
+
+.heroSlideActive {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.sliderDots {
+  position: absolute;
+  z-index: 4;
+  right: 28px;
+  bottom: 25px;
+  display: flex;
+  gap: 7px;
+}
+
+.sliderDots i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+.sliderDotActive {
+  width: 22px !important;
+  border-radius: 10px;
+  background: var(--coral) !important;
+}
+
+.stamp {
+  position: absolute;
+  right: -22px;
+  top: 42px;
+  z-index: 4;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  overflow: visible;
+}
+
+.stamp img {
+  display: block;
+  width: 106px;
+  height: auto;
+  filter: drop-shadow(0 7px 5px rgba(16, 36, 39, 0.2));
+}
+
+.floatCard {
+  position: absolute;
+  bottom: 30px;
+  left: -34px;
+  background: #fff;
+  padding: 15px 20px;
+  border-radius: 10px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  box-shadow: 0 16px 35px rgba(22, 61, 67, 0.14);
+  z-index: 5;
+}
+
+.floatCard > span {
+  background: var(--cream);
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+}
+
+.floatCard small {
+  display: block;
+  color: #74878a;
+  margin-top: 3px;
+}
+
+.carouselTail {
+  position: absolute;
+  z-index: 4;
+  left: -88px;
+  bottom: -49px;
+  width: 132px;
+  height: auto;
+  filter: drop-shadow(0 9px 7px rgba(16, 36, 39, 0.18));
+  pointer-events: none;
+}
+
+/* --- Trust band ----------------------------------------------------------- */
+
+.trust {
+  background: var(--ink);
+  color: #fff;
+  padding: 24px;
+  text-align: center;
+}
+
+.trust p {
+  opacity: 0.6;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin: 0 0 8px;
+}
+
+.trust div {
+  display: flex;
+  justify-content: center;
+  gap: 65px;
+  font: 600 21px var(--font-heading), Manrope, sans-serif;
+  opacity: 0.85;
+  flex-wrap: wrap;
+}
+
+/* --- Services ------------------------------------------------------------- */
+
+.services {
+  position: relative;
+  padding: 120px 0;
+  background: var(--cream);
+  box-shadow: 0 0 0 100vmax var(--cream);
+  clip-path: inset(0 -100vmax);
+}
+
+.sectionHead {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: end;
+  margin-bottom: 55px;
+}
+
+.sectionHead h2 {
+  font-size: 52px;
+  line-height: 1.05;
+  letter-spacing: -2.5px;
+  margin: 14px 0;
+}
+
+.sectionHead > p {
+  line-height: 1.7;
+  color: #62777a;
+  max-width: 400px;
+}
+
+.kicker {
+  font-size: 12px;
+  letter-spacing: 2px;
+  font-weight: 800;
+}
+
+.kickerLight {
+  composes: kicker;
+  color: var(--cream);
+}
+
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.serviceCard {
+  position: relative;
+  min-height: 370px;
+  border-radius: 14px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: 0.3s;
+  border: 0;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  overflow: visible;
+}
+
+.serviceCard:hover {
+  transform: translateY(-7px);
+}
+
+.serviceSelected {
+  outline: 3px solid var(--ink2);
+  outline-offset: -3px;
+}
+
+/* The cap sticker that lands on the chosen service. */
+.serviceSelected::after {
+  content: '';
+  position: absolute;
+  z-index: 4;
+  top: -39px;
+  right: -18px;
+  width: 112px;
+  height: 78px;
+  background: url('/img/cap.png') center / contain no-repeat;
+  transform: rotate(8deg);
+  filter: drop-shadow(0 8px 7px rgba(16, 36, 39, 0.2));
+  animation: capIn 0.32s ease both;
+}
+
+@keyframes capIn {
+  from { opacity: 0; transform: translateY(10px) rotate(3deg) scale(0.82); }
+  to { opacity: 1; transform: translateY(0) rotate(8deg) scale(1); }
+}
+
+.cardCoral { background: var(--coral); }
+.cardMint { background: var(--mint); }
+.cardCream { background: #fff; }
+
+.serviceIcon {
+  font-size: 42px;
+  margin-bottom: auto;
+}
+
+.serviceCard > span {
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.serviceCard h3 {
+  font-size: 26px;
+  margin: 10px 0;
+}
+
+.serviceCard p {
+  line-height: 1.5;
+  margin: 0 0 14px;
+}
+
+.serviceCard b {
+  border-bottom: 1px solid;
+  padding: 5px 0;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+/* --- Method --------------------------------------------------------------- */
+
+.method {
+  position: relative;
+  background: var(--ink);
+  color: #fff;
+  padding: 110px 0;
+}
+
+.methodGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+}
+
+.methodGrid h2 {
+  font-size: 54px;
+  line-height: 1.05;
+  margin: 17px 0;
+  -webkit-text-stroke: 5px var(--ink2);
+  paint-order: stroke fill;
+  text-shadow: 2px 3px 0 rgba(16, 36, 39, 0.32);
+}
+
+.methodIntro {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  align-content: start;
+  column-gap: 12px;
+}
+
+.methodIntro > .kickerLight,
+.methodIntro > h2 {
+  grid-column: 1 / -1;
+}
+
+/* A speech bubble beside the mascot. */
+.methodBubble {
+  grid-column: 2;
+  grid-row: 3;
+  align-self: center;
+  display: inline-block;
+  max-width: 360px;
+  margin: 0;
+  padding: 10px 14px;
+  border: 2px solid var(--ink2);
+  border-radius: 16px 16px 16px 5px;
+  background: var(--cream);
+  color: var(--ink2);
+  box-shadow: 0 10px 24px rgba(16, 36, 39, 0.2);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.miniMascot {
+  grid-column: 1;
+  grid-row: 3;
+  align-self: center;
+  justify-self: start;
+  display: block;
+  width: 112px;
+  margin: 0;
+  position: relative;
+  top: 10px;
+  z-index: 2;
+}
+
+.methodList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.methodList li {
+  display: flex;
+  gap: 30px;
+  padding: 27px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.methodList li > b {
+  color: var(--coral);
+}
+
+.methodList h3 {
+  margin: 0 0 6px;
+}
+
+.methodList p {
+  margin: 0;
+  color: #b7c7c9;
+  line-height: 1.6;
+}
+
+/* --- Booking -------------------------------------------------------------- */
+
+.booking {
+  position: relative;
+  padding: 120px 0;
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 90px;
+}
+
+.bookingIntro > p {
+  color: #63787c;
+  line-height: 1.7;
+}
+
+.bookingIntro h2 {
+  font-size: 52px;
+  line-height: 1.05;
+  letter-spacing: -2.5px;
+  margin: 14px 0;
+}
+
+.syncPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--cream);
+  border-radius: 30px;
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 12px;
+  margin-top: 20px;
+}
+
+.bookingCard {
+  position: relative;
+  z-index: 2;
+  background: #fff;
   border: 1px solid var(--line);
   border-radius: 16px;
-  padding: 32px;
+  padding: 35px;
   box-shadow: 0 22px 60px rgba(22, 61, 67, 0.08);
+  min-height: 460px;
+  overflow: visible;
 }
 
-.note {
-  margin: 0 0 24px;
-  padding: 12px 14px;
+/* The raccoon tail tucked behind the form card. */
+.bookingTail {
+  position: absolute;
+  z-index: 0;
+  left: -141px;
+  bottom: -23px;
+  width: 141px;
+  height: 180px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bookingTail img {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 175px;
+  height: 145px;
+  object-fit: contain;
+  transform: rotate(36deg);
+  filter: drop-shadow(0 9px 7px rgba(16, 36, 39, 0.17));
+}
+
+/* --- Values --------------------------------------------------------------- */
+
+.values {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.35fr repeat(3, 1fr);
   background: var(--cream);
-  border-radius: 10px;
-  font-size: 0.9rem;
-  color: var(--muted);
+  width: min(1280px, calc(100% - 48px));
+  margin: 0 auto 120px;
+  padding: 65px;
+  border-radius: 18px;
+  gap: 40px;
 }
 
-@media (max-width: 560px) {
-  .formSection {
-    padding: 22px 18px;
+.values h2 {
+  font-size: 38px;
+  line-height: 1.1;
+  margin-top: 15px;
+}
+
+.value {
+  text-align: center;
+}
+
+.value b {
+  display: block;
+  color: var(--coral);
+}
+
+.value h3 {
+  font-size: 18px;
+  margin: 28px 0 8px;
+}
+
+.value p {
+  font-size: 14px;
+  line-height: 1.6;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- Footer --------------------------------------------------------------- */
+
+.footer {
+  position: relative;
+  background: var(--ink);
+  color: #fff;
+  margin-top: 100px;
+  padding: 85px 0 25px;
+  text-align: center;
+}
+
+.footerLogo {
+  width: 340px;
+  max-width: 80%;
+  height: auto;
+}
+
+.footer h2 {
+  font-size: 58px;
+  line-height: 1.05;
+  margin: 40px 0;
+  -webkit-text-stroke: 5px var(--ink2);
+  paint-order: stroke fill;
+  text-shadow: 2px 3px 0 rgba(16, 36, 39, 0.32);
+}
+
+.foot {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  margin-top: 70px;
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* --- The star-cleaning easter egg ----------------------------------------- */
+
+.fixedStar {
+  position: absolute;
+  z-index: 7;
+  color: var(--coral);
+  font-style: normal;
+  line-height: 1;
+  user-select: none;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+}
+
+.starCleaned {
+  opacity: 0;
+  transform: scale(0) rotate(130deg);
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.congrats {
+  position: fixed;
+  z-index: 100;
+  right: 25px;
+  bottom: 22px;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(25px) scale(0.9);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
+}
+
+.congratsShow {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.congrats img {
+  width: 82px;
+  height: auto;
+  filter: drop-shadow(0 8px 7px rgba(16, 36, 39, 0.18));
+}
+
+.congrats div {
+  position: relative;
+  margin-bottom: 48px;
+  padding: 12px 17px;
+  border: 2px solid var(--ink);
+  border-radius: 16px 16px 16px 4px;
+  background: var(--cream);
+  color: var(--ink2);
+  box-shadow: 0 10px 25px rgba(16, 36, 39, 0.15);
+  font-weight: 800;
+}
+
+/* Touch devices get no stars: hover-to-clean does not translate, and they would
+   just be decorative clutter on a small screen. */
+@media (max-width: 800px), (pointer: coarse) {
+  .fixedStar {
+    display: none;
+  }
+}
+
+/* --- Responsive ----------------------------------------------------------- */
+
+@media (max-width: 800px) {
+  .shell {
+    width: min(100% - 30px, 600px);
+  }
+
+  .nav {
+    height: 74px;
+  }
+
+  .navLinks,
+  .navCta {
+    display: none;
+  }
+
+  .menu {
+    display: block;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: 45px;
+  }
+
+  .heroArt {
+    height: 420px;
+  }
+
+  .heroTitle {
+    font-size: 57px;
+    letter-spacing: -3px;
+  }
+
+  .trust div {
+    gap: 24px;
+  }
+
+  .sectionHead,
+  .methodGrid,
+  .booking {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+
+  .services {
+    padding: 80px 0;
+  }
+
+  .serviceGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .serviceCard {
+    min-height: 300px;
+  }
+
+  .method {
+    padding: 75px 0;
+  }
+
+  .booking {
+    padding: 80px 0;
+  }
+
+  .values {
+    grid-template-columns: 1fr;
+    padding: 40px 28px;
+  }
+
+  .sectionHead h2,
+  .bookingIntro h2,
+  .methodGrid h2 {
+    font-size: 42px;
+  }
+
+  .footer h2 {
+    font-size: 42px;
+  }
+
+  .footerLogo {
+    width: 250px;
+  }
+
+  .foot {
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .methodIntro {
+    grid-template-columns: 92px 1fr;
+    column-gap: 9px;
+  }
+
+  .miniMascot {
+    width: 86px;
+  }
+
+  .bookingTail {
+    left: -89px;
+    bottom: -11px;
+    width: 89px;
+    height: 145px;
+  }
+
+  .bookingTail img {
+    width: 135px;
+    height: 112px;
+  }
+}
+
+@media (max-width: 460px) {
+  .heroActions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .heroArt {
+    height: 350px;
+  }
+
+  .floatCard {
+    left: 8px;
+  }
+
+  .stamp img {
+    width: 90px;
+  }
+
+  .trust div {
+    font-size: 16px;
+  }
+
+  .bookingCard {
+    padding: 24px;
   }
 }

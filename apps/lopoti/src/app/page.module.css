@@ -1,50 +1,797 @@
-.page {
-  width: min(760px, calc(100% - 40px));
-  margin: 0 auto;
-  padding: 56px 0 100px;
+/*
+ * Lopoti home page — ported from the original stylesheet.
+ *
+ * Kept close to verbatim: the measurements, the radii and the colour choices are
+ * the design, and reimplementing them by eye would lose exactly the details that
+ * make the site feel finished.
+ */
+
+/* --- Header --------------------------------------------------------------- */
+
+.siteHeader {
+  height: 94px;
+  max-width: 1280px;
+  margin: auto;
+  padding: 17px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.header {
-  margin-bottom: 48px;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 0.77rem;
+  font-weight: 700;
+}
+
+.brand img {
+  width: 116px;
+  max-height: 55px;
+  object-fit: contain;
+  object-position: left;
+}
+
+.brandAnimal {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.nav a {
+  color: var(--ink);
+  font-size: 0.92rem;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.navCta {
+  background: var(--ink);
+  color: #fff !important;
+  padding: 12px 18px;
+  border-radius: 999px;
+}
+
+.menuButton {
+  display: none;
+  background: transparent;
+  border: 0;
+  font: 700 0.9rem var(--font-body), Roboto, Arial, sans-serif;
+  color: var(--ink);
+}
+
+/* --- "Le pote de ton poti pote" band -------------------------------------- */
+
+.potesLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  min-height: 50px;
+  padding: 8px 22px;
+  background: var(--ink);
+  color: var(--cream);
+  text-decoration: none;
+  font: 1.4rem var(--font-display), Georgia, serif;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+
+.potesLink img {
+  width: 76px;
+  height: auto;
+}
+
+.potesLink span {
+  transform: translateY(2px);
+}
+
+.potesLink:hover {
+  background: var(--leaf);
+}
+
+/* --- Hero ----------------------------------------------------------------- */
+
+.hero {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 58px 36px 88px;
+  display: grid;
+  grid-template-columns: 1.03fr 0.97fr;
+  gap: 54px;
+  align-items: center;
+}
+
+.heroCopy {
+  padding: 10px 0;
 }
 
 .eyebrow {
-  margin: 0 0 12px;
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--green-deep);
+  font-size: 0.75rem;
+  letter-spacing: 0.13em;
+  font-weight: 700;
+  color: var(--leaf);
+  margin-bottom: 18px;
 }
 
-.header h1 {
-  font-size: clamp(2rem, 5vw, 3rem);
+.lead {
+  font-size: 1.18rem;
+  max-width: 570px;
+  color: var(--ink);
 }
 
-.lede {
-  max-width: 56ch;
-  color: var(--muted);
+.heroActions {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  margin: 34px 0;
+}
+
+.quickTrust {
+  display: flex;
+  gap: 17px;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.quickTrust li::before {
+  content: '✦';
+  color: var(--leaf);
+  margin-right: 6px;
+}
+
+.heroVisual {
+  position: relative;
+  height: 560px;
+  padding: 14px;
+}
+
+.heroImageLink {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.heroPicto {
+  position: absolute;
+  top: -24px;
+  right: -17px;
+  z-index: 2;
+  width: 76px;
+  height: auto;
+  filter: drop-shadow(0 6px 10px #456c3333);
+  pointer-events: none;
+}
+
+.photoLabel {
+  position: absolute;
+  bottom: 46px;
+  left: -18px;
+  z-index: 2;
+  max-width: 215px;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 15px 17px;
+  margin: 0;
+  border-radius: 10px;
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 600;
   font-size: 1.05rem;
+  text-decoration: none;
+  box-shadow: 0 10px 28px #456c3322;
 }
 
-.formSection {
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: 18px;
+.photoLabel span {
+  color: var(--leaf);
+}
+
+/* --- Slideshow (hero and trust) ------------------------------------------- */
+
+.slideshow {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.slideshow img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: translateX(100%);
+  animation: slideshow 20s infinite;
+}
+
+.slideshow img:nth-child(1) { animation-delay: -0.8s; }
+.slideshow img:nth-child(2) { animation-delay: -5.8s; }
+.slideshow img:nth-child(3) { animation-delay: -10.8s; }
+.slideshow img:nth-child(4) { animation-delay: -15.8s; }
+
+@keyframes slideshow {
+  0% { opacity: 0; transform: translateX(100%); }
+  4%, 20% { opacity: 1; transform: translateX(0); }
+  25%, 100% { opacity: 0; transform: translateX(-100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slideshow img { animation: none; }
+  .slideshow img:not(:first-child) { display: none; }
+  .slideshow img:first-child { opacity: 1; transform: none; }
+}
+
+/* --- Buttons -------------------------------------------------------------- */
+
+.button {
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 14px 23px;
+  font: 700 0.95rem var(--font-body), Roboto, Arial, sans-serif;
+  text-decoration: none;
+}
+
+.buttonPrimary {
+  composes: button;
+  background: var(--ink);
+  color: #fff;
+}
+
+.buttonPrimary:hover {
+  background: var(--leaf);
+}
+
+.buttonGhost {
+  composes: button;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid #8ba276;
+}
+
+.textLink {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.textLink span {
+  font-size: 1.3rem;
+  margin-left: 4px;
+}
+
+/* --- Sections ------------------------------------------------------------- */
+
+.section {
+  padding: 95px max(36px, calc((100vw - 1208px) / 2));
+}
+
+.sectionIntro {
+  max-width: 650px;
+}
+
+.smallNote {
+  color: var(--muted);
+  font-size: 0.83rem;
+  margin: 20px 0 0;
+}
+
+/* --- Companion carousel --------------------------------------------------- */
+
+.companionCarousel {
+  composes: section;
+  background: var(--paper);
+  padding: 52px max(36px, calc((100vw - 1208px) / 2)) 26px;
+}
+
+.carouselHeading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.carouselControls {
+  display: flex;
+  gap: 10px;
+}
+
+.carouselButton {
+  border: 1px solid #8ba276;
+  background: transparent;
+  color: var(--ink);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.05rem;
+  transition: 0.15s;
+}
+
+.carouselButton:hover {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+.carouselTrack {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(240px, 68vw);
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 8px 8px 14px;
+  scrollbar-width: none;
+}
+
+.carouselTrack::-webkit-scrollbar {
+  display: none;
+}
+
+.companionCard {
+  position: relative;
+  scroll-snap-align: start;
+  border-radius: 20px;
+  overflow: hidden;
+  text-decoration: none;
+  border: 0;
+  padding: 0;
+  background: none;
+}
+
+.companionCard img {
+  display: block;
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  transition: transform 0.25s;
+}
+
+.companionCard:hover img {
+  transform: scale(1.04);
+}
+
+.companionSelected {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.companionCard span {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 700 0.85rem var(--font-body), Roboto, Arial, sans-serif;
+  padding: 8px 14px;
+  border-radius: 999px;
+}
+
+/* --- Services ------------------------------------------------------------- */
+
+.services {
+  composes: section;
+  background: var(--paper);
+}
+
+.servicesTitlePicto {
+  display: inline-block;
+  width: auto;
+  height: 1.25em;
+  object-fit: contain;
+  vertical-align: -0.28em;
+  margin: 0 0.14em;
+}
+
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 16px;
+  margin-top: 42px;
+}
+
+.serviceCard {
+  min-height: 305px;
+  border-radius: 20px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  border: 0;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+.serviceSelected {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.serviceCard p {
+  font-size: 0.92rem;
+}
+
+.serviceCard a {
+  margin-top: auto;
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.serviceIcon {
+  font: 2rem var(--font-display), Georgia, serif;
+  margin-bottom: 35px;
+}
+
+.cardCoral { background: #e1e7ba; }
+.cardYellow { background: #f7f9cd; }
+.cardGreen { background: #cbdcb0; }
+.cardBlue { background: #dce8c5; }
+
+/* --- Process -------------------------------------------------------------- */
+
+.process {
+  composes: section;
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.process .eyebrow {
+  color: var(--yellow);
+}
+
+.processList {
+  margin: 52px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+}
+
+.processList li {
+  border-top: 1px solid var(--green);
+  padding-top: 16px;
+}
+
+.processStep {
+  color: var(--yellow);
+  font: 1.45rem var(--font-display), Georgia, serif;
+}
+
+.processList h3 {
+  margin: 16px 0 5px;
+}
+
+.processList p {
+  font-size: 0.93rem;
+  color: #e1e7ba;
+}
+
+/* --- Trust ---------------------------------------------------------------- */
+
+.trust {
+  composes: section;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 85px;
+  align-items: center;
+}
+
+.trustImage {
+  height: 540px;
+}
+
+.checkList {
+  padding: 0;
+  list-style: none;
+  margin: 28px 0;
+}
+
+.checkList li {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+  font-weight: 600;
+}
+
+.checkList li::before {
+  content: '✓';
+  display: inline-grid;
+  place-items: center;
+  background: var(--green);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  margin-right: 10px;
+  font-size: 0.75rem;
+}
+
+.credential {
+  color: var(--muted);
+  font-size: 0.83rem;
+}
+
+/* --- Les potes ------------------------------------------------------------ */
+
+.lesPotes {
+  composes: section;
+  background: var(--paper);
+}
+
+.poteSitter {
+  font: 1.55rem var(--font-display), Georgia, serif;
+  color: var(--leaf);
+  margin: -8px 0 17px;
+}
+
+.potesCarousel {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(680px, 90vw);
+  gap: 22px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  margin-top: 42px;
+  padding: 8px 22px 12px;
+  scrollbar-width: none;
+}
+
+.potesCarousel::-webkit-scrollbar {
+  display: none;
+}
+
+.poteWrapper {
+  position: relative;
+  scroll-snap-align: start;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background: none;
+  text-align: left;
+}
+
+.poteWrapper:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 4px;
+  border-radius: 20px;
+}
+
+.poteSelected .poteCard {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.poteCard {
+  position: relative;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  height: 310px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--blue);
+}
+
+.poteCard > img {
+  width: 100%;
+  height: 100%;
+  min-height: 310px;
+  object-fit: cover;
+  object-position: center 55%;
+}
+
+.potePicto {
+  display: none;
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  left: 8px;
+  width: 42px;
+  height: auto;
+  filter: drop-shadow(0 3px 6px #456c3322);
+  pointer-events: none;
+}
+
+.poteSelected .potePicto {
+  display: block;
+}
+
+.potePlaceholder {
+  display: grid;
+  place-items: center;
+  min-height: 310px;
+  background: var(--green);
+  color: var(--paper);
+  font: 4rem var(--font-display), Georgia, serif;
+}
+
+.poteCard > div {
   padding: 32px;
 }
 
-.note {
-  margin: 0 0 24px;
-  padding: 12px 14px;
-  background: var(--cream);
-  border-radius: 10px;
-  font-size: 0.9rem;
-  color: var(--muted);
+.poteCard h3 {
+  font-size: 1.55rem;
 }
 
-@media (max-width: 560px) {
-  .formSection {
-    padding: 22px 18px;
+.poteBio {
+  background: var(--paper);
+  border-radius: 14px;
+  padding: 13px 15px;
+  color: var(--muted);
+  line-height: 1.45;
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+/* --- Footer --------------------------------------------------------------- */
+
+.footer {
+  background: var(--ink);
+  color: #e1e7ba;
+  padding: 43px max(36px, calc((100vw - 1208px) / 2));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+}
+
+.footer p {
+  margin: 0;
+}
+
+.footer img {
+  width: 116px;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+}
+
+/* --- Responsive ----------------------------------------------------------- */
+
+@media (max-width: 850px) {
+  .siteHeader {
+    padding: 14px 20px;
+    height: 78px;
+  }
+
+  .nav {
+    display: none;
+    position: absolute;
+    z-index: 3;
+    top: 78px;
+    left: 0;
+    right: 0;
+    background: var(--cream);
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    box-shadow: 0 15px 20px #456c3322;
+  }
+
+  .navOpen {
+    display: flex;
+  }
+
+  .menuButton {
+    display: block;
+  }
+
+  .hero,
+  .trust {
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+
+  .hero {
+    padding: 35px 22px 62px;
+  }
+
+  .heroVisual {
+    height: 420px;
+    max-width: 500px;
+    width: 100%;
+    justify-self: center;
+  }
+
+  .section {
+    padding: 65px 22px;
+  }
+
+  .companionCarousel {
+    padding: 36px 22px 10px;
+  }
+
+  .companionCard img {
+    height: 240px;
+  }
+
+  .serviceGrid,
+  .processList {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .processList {
+    gap: 24px;
+  }
+
+  .trustImage {
+    height: 400px;
+  }
+
+  .footer {
+    padding: 32px 22px;
+    gap: 15px;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 520px) {
+  .potesLink {
+    justify-content: flex-start;
+    font-size: 1.2rem;
+  }
+
+  .potesLink img {
+    width: 78px;
+  }
+
+  .poteCard {
+    grid-template-columns: 1fr;
+    grid-template-rows: 300px 1fr;
+    height: 510px;
+  }
+
+  .poteCard > img {
+    height: 300px;
+    min-height: 0;
+  }
+
+  .potePlaceholder {
+    min-height: 300px;
+  }
+
+  .heroActions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .serviceGrid,
+  .processList {
+    grid-template-columns: 1fr;
+  }
+
+  .processList li {
+    padding-top: 12px;
+  }
+
+  .heroVisual {
+    height: 350px;
+  }
+
+  .photoLabel {
+    left: 0;
   }
 }

@@ -1,10 +1,23 @@
 /*
  * Nooklean — base styles.
  *
- * As with Lopoti, the full design is ported in a later slice. The original
- * stylesheet is preserved nearly verbatim when that happens; this file holds
- * only the reset and palette hookup so the app builds and renders sanely now.
+ * Ported from the original site's two stylesheets, close to verbatim. The
+ * palette below is the one from `typography.css`, which overrode the earlier
+ * teal/coral scheme: deep teal ink, leaf green accent, pale green cream.
  */
+
+:root {
+  --ink: #254a50;
+  --ink2: #102427;
+  --coral: #64d25a;
+  --coral-shadow: #3e963b;
+  --mint: #628e94;
+  --cream: #dcefc6;
+  --paper: #ffffff;
+  --white: #fff;
+  --line: rgba(37, 74, 80, 0.16);
+  --muted: #4f686c;
+}
 
 * {
   box-sizing: border-box;
@@ -18,27 +31,23 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font:
-    16px/1.6 'DM Sans',
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    sans-serif;
+  font-family: var(--font-body), 'DM Sans', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 h1,
 h2,
 h3 {
-  /* Manrope for headings, Titan One for display accents — both wired up with
-     next/font when the full design lands. */
-  font-family: 'Manrope', system-ui, sans-serif;
-  margin: 0 0 0.5em;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  /* Titan One in the original: a heavy display face, always weight 400. */
+  font-family: var(--font-display), Impact, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0;
+  margin-top: 0;
 }
 
-a {
-  color: var(--ink);
+img {
+  max-width: 100%;
 }
 
 button {
@@ -47,8 +56,7 @@ button {
 }
 
 input,
-select,
-textarea {
+select {
   font: inherit;
   color: inherit;
 }
@@ -58,7 +66,15 @@ textarea {
   outline-offset: 3px;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
+/* The star-cleaning easter egg animates, and the hero slider cross-fades.
+   Respect a visitor who has asked for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

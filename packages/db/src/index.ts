@@ -28,6 +28,22 @@ export {
 } from './queries';
 
 export {
+  DEFAULT_SERVICES_CONFIG,
+  SERVICES_CONFIG_KEY,
+  animalRefSchema,
+  poteProfileSchema,
+  resolveAnimals,
+  sanitizeServicesConfig,
+  serviceItemSchema,
+  servicesConfigSchema,
+  type AnimalRef,
+  type PoteProfile,
+  type ResolvedAnimal,
+  type ServiceItem,
+  type ServicesConfig,
+} from './site-config';
+
+export {
   BRANDS,
   HONEYPOT_FIELD,
   QUOTE_STATUSES,
